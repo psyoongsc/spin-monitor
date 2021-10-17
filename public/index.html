@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>회전체 상황 모니터링</title>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <link href="style/monitor.css" rel="stylesheet" type="text/css" />
+    <link href="js/jquery/jqplot/jquery.jqplot.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="js/jquery/jqplot/jquery.jqplot.js"></script>
+    <script type="text/javascript" src="js/jquery/jqplot/excanvas.min.js"></script>
+    
+    <script type="text/javascript">
+    $(function() {
+        $.post("http://127.0.0.1:3000/recentSensor", {ch: "1"}, function(data) {
+            var points = data;
+
+            plot = $.jqplot('chart1', [points], {
+                legend: {show: true, location: 'ne'},
+                title: '회전체 가속도 센서',
+                series: [{color: "#0000ff", label: "반경방향", showMarker: false}],
+                axes: {
+                    xaxis: {
+                        min: 0,
+                        max: 500,
+                        tickOptions: {
+                            formatString: '-%d'
+                        }
+                    },
+                    yaxis: {
+                        label: '전압(v)',
+                        min: -0.8,
+                        max: 0.8
+                    }
+                }
+            })
+        });
+
+        $.post("http://127.0.0.1:3000/recentSensor", {ch: "2"}, function(data) {
+            var points = data;
+
+            plot = $.jqplot('chart2', [points], {
+                legend: {show: true, location: 'ne'},
+                
+                series: [{color: '#ff0000', label: "축방향", showMarker: false}],
+                axes: {
+                    xaxis: {
+                        label: '시간(ms)',
+                        min: 0,
+                        max: 500,
+                        tickOptions: {
+                            formatString: '-%d'
+                        }
+                    },
+                    yaxis: {
+                        label: '전압(v)',
+                        min: -0.8,
+                        max: 0.8
+                    }
+                }
+            })
+        });
+    });
+    </script>
+</head>
+<body>
+    <h1 id="pagetitle">센서데이터 모니터링 페이지</h1>
+    <div id="chart1"></div>
+    <div id="chart2"></div>
+</body>
+</html>
