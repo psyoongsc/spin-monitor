@@ -1,7 +1,0 @@
-{
-    "host" : "spin.developerpsy.com",
-    "user" : "psy",
-    "password" : "18698273",
-    "database" : "SpinData",
-    "connectionLimit": 30
-}
