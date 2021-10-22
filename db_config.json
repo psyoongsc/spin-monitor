@@ -1,7 +1,7 @@
 {
     "host" : "spin.developerpsy.com",
-    "user" : "psy",
-    "password" : "18698273",
+    "user" : "viewer",
+    "password" : "viewer",
     "database" : "SpinData",
     "connectionLimit": 30,
     "timezone": "Asia/Seoul"
