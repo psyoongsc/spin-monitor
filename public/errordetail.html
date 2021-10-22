@@ -5,9 +5,6 @@
     <title>회전체 상황 모니터링</title>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
     <link href="style/monitor.css" rel="stylesheet" type="text/css" />
     <link href="js/jquery/jqplot/jquery.jqplot.css" rel="stylesheet" type="text/css" />
 
@@ -16,12 +13,28 @@
     
     <script type="text/javascript">
     $(function() {
-        $.post("http://spin.developerpsy.com/recentSensor", {ch: "1"}, function(data) {
+        var getParameter = function(paramName) {
+            var returnValue;
+
+            var url = location.href;
+
+            var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+
+            for(var i=0; i<parameters.length; i++) {
+                var varName = parameters[i].split('=')[0];
+                if(varName.toUpperCase() == paramName.toUpperCase()) {
+                    returnValue = parameters[i].split('=')[1];
+                    return decodeURIComponent(returnValue);
+                }
+            }
+        }
+
+        $.post("http://spin.developerpsy.com/sensor", {ch: "1", start: getParameter('start')}, function(data) {
             var points = data;
 
             plot = $.jqplot('chart1', [points], {
                 legend: {show: true, location: 'ne'},
-                title: '최근 0.5초간 회전체 가속도 센서',
+                title: '고장이 감지된 시간의 센서 데이터',
                 series: [{color: "#0000ff", label: "반경방향", showMarker: false}],
                 axes: {
                     xaxis: {
@@ -40,7 +53,7 @@
             })
         });
 
-        $.post("http://spin.developerpsy.com/recentSensor", {ch: "2"}, function(data) {
+        $.post("http://spin.developerpsy.com/sensor", {ch: "2", start: getParameter('start')}, function(data) {
             var points = data;
 
             plot = $.jqplot('chart2', [points], {
@@ -64,29 +77,14 @@
                 }
             })
         });
-
-        $.post("http://spin.developerpsy.com/errorlog", {}, function(data) {
-            var errors = data;
-
-            for(var i = 0; i<errors.length; i++) {
-                $(".list-group").append("<li class=\"list-group-item\"><a href=\"http://spin.developerpsy.com/errordetail.html?start=" + errors[i] + "\">" + errors[i] + "</a></li>")
-            }
-        })
     });
     </script>
 </head>
 <body>
-    <h1 id="pagetitle">센서데이터 모니터링 페이지</h1>
+    <div style="text-align: right;">
+        <a href="http://spin.developerpsy.com">메인으로</a>
+    </div>
     <div id="chart1"></div>
     <div id="chart2"></div>
-
-
-    <div>
-        <div style="float: left; width:30%; text-align: center;">
-            <h2>고장 감지 Log</h2>
-            <ul class="list-group">
-            </ul>
-        </div>
-    </div>
 </body>
 </html>

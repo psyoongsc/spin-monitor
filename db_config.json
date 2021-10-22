@@ -3,5 +3,6 @@
     "user" : "psy",
     "password" : "18698273",
     "database" : "SpinData",
-    "connectionLimit": 30
+    "connectionLimit": 30,
+    "timezone": "Asia/Seoul"
 }

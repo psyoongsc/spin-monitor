@@ -1,3 +1,14 @@
 #pagetitle {
     text-align: center;
+    padding-bottom: 50px;
+}
+
+.list-group {
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+h2 {
+    padding-top: 50px;
+    text-align: center;
 }
